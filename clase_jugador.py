@@ -25,7 +25,7 @@ class Jugador (Personaje):
             else:
                 self.animar(pantalla, "salta_izquierda")
 
-            self.mover(self.desplazamiento_y, "y")
+            self.mover(self.desplazamiento_y,pantalla, "y")
 
             if self.desplazamiento_y + self.gravedad < self.limite_velocidad_caida:
                 self.desplazamiento_y += self.gravedad
@@ -49,12 +49,12 @@ class Jugador (Personaje):
                 if not self.esta_saltando:
                     self.animar(pantalla, "camina_derecha")
                 self.ultima_accion = "derecha"
-                self.mover(10, "x")
+                self.mover(10, pantalla, "x")
             case "izquierda":
                 if not self.esta_saltando:
                     self.animar(pantalla, "camina_izquierda")
                 self.ultima_accion = "izquierda"
-                self.mover(-10, "x")
+                self.mover(-10, pantalla, "x")
             case "salta":
                 if not self.esta_saltando:
                     self.esta_saltando = True

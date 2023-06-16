@@ -55,11 +55,18 @@ class Personaje:
         pantalla.blit(imagenes_accion[self.contador_pasos], self.lados['main'])
         self.contador_pasos += 1
 
-    def mover(self, velocidad, eje:str):
+    def mover(self, velocidad, pantalla, eje:str):
 
         for lado in dict(self.lados):
-            if eje == "x" :
-                self.lados[lado].x += velocidad
+            if eje == "x":
+                if self.accion == "derecha":
+                    nueva_x = self.lados["main"].x + velocidad
+                    if nueva_x < pantalla.get_rect().width -  self.lados["main"].width:
+                        self.lados[lado].x += velocidad
+                else:
+                    nueva_x = self.lados["main"].x - velocidad
+                    if nueva_x > 0:
+                        self.lados[lado].x += velocidad
             else:
                 self.lados[lado].y += velocidad
         
