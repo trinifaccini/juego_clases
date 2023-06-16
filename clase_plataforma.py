@@ -1,19 +1,12 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 
-import pygame
+from clase_objeto import Objeto
 
-from configuracion_imagenes import obtener_rectangulos
-
-class Plataforma:
+class Plataforma(Objeto):
     def __init__(self, tamanio: tuple, imagen, pos_inicial: dict, tipo:str) -> None:
 
-        plataforma = pygame.image.load(imagen)
-        self.superficie = pygame.transform.scale(plataforma, (tamanio[0],tamanio[1]))
+        super().__init__(tamanio, imagen, pos_inicial)
 
-        rectangulo = self.superficie.get_rect()
-        rectangulo.x = pos_inicial['x']
-        rectangulo.y = pos_inicial['y']
-
-        self.lados = obtener_rectangulos(pygame.Rect(rectangulo))
         self.tipo = tipo
+

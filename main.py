@@ -11,6 +11,7 @@ MAIN
 
 import sys
 import pygame
+from clase_item import Item
 from clase_jugador import Jugador
 from clase_enemigo import Enemigo
 from clase_plataforma import Plataforma
@@ -20,7 +21,7 @@ from modo import *
 ################################################################
 
 # Blitear y actualizar todos los objetos de mi pantalla
-def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador, enemigos):
+def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador, enemigos, items):
 
     pantalla.blit(fondo, (0, 0))
 
@@ -29,7 +30,8 @@ def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador
 
     # Plataformas
     for p in lista_plataformas:
-        pantalla.blit(p.superficie, (p.lados['main'].x, p.lados['main'].y))
+       p.update(pantalla)
+
 
     # Personajes
     jugador.update(pantalla, lista_plataformas, enemigos)
@@ -37,13 +39,16 @@ def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador
     for enemigo in enemigos:
         enemigo.update(pantalla)
 
+    for item in items:
+        item.update(pantalla)
+
 
 
 ########################################################################
 
 # PANTALLA
 
-ANCHO_PANTALLA, ALTO_PANTALLA = 1300, 700
+ANCHO_PANTALLA, ALTO_PANTALLA = 1200, 650
 TAMANIO_PANTALLA = (ANCHO_PANTALLA, ALTO_PANTALLA)
 FPS = 18
 
@@ -53,9 +58,10 @@ RELOJ = pygame.time.Clock()
 PANTALLA = pygame.display.set_mode(TAMANIO_PANTALLA)
 
 # FONDO
-fondo = pygame.image.load("Recursos/Fondos/fondo_nivel_1.png")
+fondo = pygame.image.load("Recursos/Fondos/fondo_negro.jpeg")
 fondo = pygame.transform.scale(fondo, TAMANIO_PANTALLA)
 
+# PLATAFORMAS
 
 ALTO_PISO = 20
 piso = Plataforma(
@@ -69,9 +75,20 @@ plataforma_uno = Plataforma(
 
 lista_plataformas = [piso, plataforma_uno]
 
+# ITEMS
+coca = Item(
+    (70,100),"Recursos/Obstaculos/coca.png",
+    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70})
+
+hamburguesa = Item(
+    (60,40),"Recursos/Obstaculos/hamburguesa.png",
+    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70})
+
+items = [coca,hamburguesa]
+
 # PERSONAJE
 ANCHO_PERSONAJE = 80
-ALTO_PERSONAJE = 95
+ALTO_PERSONAJE = 95 
 tamanio = (ANCHO_PERSONAJE, ALTO_PERSONAJE)
 pos_inicial = {"x": ANCHO_PANTALLA/2,
                "y": ALTO_PANTALLA-ALTO_PERSONAJE-ALTO_PISO}
@@ -152,7 +169,7 @@ while True:
 
     textos = [texto_vidas, texto_tiempo]
 
-    actualizar_pantalla(PANTALLA, fondo, textos, lista_plataformas, esquiador, enemigos)
+    actualizar_pantalla(PANTALLA, fondo, textos, lista_plataformas, esquiador, enemigos, items)
 
     if get_mode() is True:
         for p in lista_plataformas:
