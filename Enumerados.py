@@ -1,3 +1,7 @@
+'''
+ENUMERADOS
+'''
+
 from enum import Enum 
 
 class Colores(Enum):

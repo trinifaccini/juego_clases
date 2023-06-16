@@ -1,12 +1,13 @@
 """
 CONFIGURACIONES DE IMAGEN
-
 """
 # pylint: disable=missing-function-docstring
 # pylint: disable=invalid-name
 # pylint: disable=consider-using-enumerate
+# pylint: disable=pointless-string-statement
 
 import pygame
+#from clase_imagen import Imagen
 
 #########################
 
@@ -55,11 +56,10 @@ personaje_quieto_derecha = [
     pygame.image.load("Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_0.png"),
     pygame.image.load("Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_1.png"),
     pygame.image.load("Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_2.png"),
-    pygame.image.load("Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_3.png"),
+    pygame.image.load("Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_3.png")
     ]
 
 personaje_quieto_izquierda = girar_imagenes(personaje_quieto_derecha, True, False)
-
 
 personaje_camina_derecha = [
     pygame.image.load("Recursos/Personajes/Esquiador/Moviendose/esquiador_moviendose_0.png"),
@@ -78,6 +78,65 @@ personaje_salta_derecha = [
                  ]
 
 personaje_salta_izquierda = girar_imagenes(personaje_salta_derecha, True, False)
+
+'''
+ANCHO_PERSONAJE = 80
+ALTO_PERSONAJE = 95
+tamanio = (ANCHO_PERSONAJE, ALTO_PERSONAJE)
+
+paths_quieto_derecha = [
+    "Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_0.png",
+    "Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_1.png",
+    "Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_2.png",
+    "Recursos/Personajes/Esquiador/Quieto/esquiador_quieto_3.png"
+]
+
+personaje_quieto_derecha = []
+personaje_quieto_izquierda = []
+
+for path in paths_quieto_derecha:
+    imagen_der = Imagen(path, tamanio)
+    imagen_izq = Imagen(path, tamanio)
+    imagen_izq.girar(True,False)
+
+    personaje_quieto_derecha.append(imagen_der)
+    personaje_quieto_izquierda.append(imagen_izq)
+
+paths_camina_derecha = [
+    "Recursos/Personajes/Esquiador/Moviendose/esquiador_moviendose_0.png",
+    "Recursos/Personajes/Esquiador/Moviendose/esquiador_moviendose_1.png",
+    "Recursos/Personajes/Esquiador/Moviendose/esquiador_moviendose_2.png",
+    "Recursos/Personajes/Esquiador/Moviendose/esquiador_moviendose_3.png"
+]
+
+personaje_camina_derecha = []
+personaje_camina_izquierda = []
+
+for path in paths_camina_derecha:
+    imagen_der = Imagen(path, tamanio)
+    imagen_izq = Imagen(path, tamanio)
+    imagen_izq.girar(True,False)
+
+    personaje_camina_derecha.append(imagen_der)
+    personaje_camina_izquierda.append(imagen_izq)
+
+
+paths_salta_derecha = [
+    "Recursos/Personajes/Esquiador/Saltando/esquiador_saltando_0.png"
+]
+
+personaje_salta_derecha = []
+personaje_salta_izquierda = []
+
+for path in paths_salta_derecha:
+    imagen_der = Imagen(path, tamanio)
+    imagen_izq = Imagen(path, tamanio)
+    imagen_izq.girar(True,False)
+
+    personaje_salta_derecha.append(imagen_der)
+    personaje_salta_izquierda.append(imagen_izq)
+
+'''
 
 ####
 
@@ -118,7 +177,7 @@ yeti_camina_derecha = [
 
 ]
 
-yeti_camina_izquierda = girar_imagenes(oso_camina_derecha, True, False)
+yeti_camina_izquierda = girar_imagenes(yeti_camina_derecha, True, False)
 
 yeti_ataca_derecha = [
     pygame.image.load("Recursos/Personajes/Yeti/Ataca/yeti_ataca_0.png"),
@@ -131,3 +190,32 @@ yeti_ataca_derecha = [
 
 yeti_ataca_izquierda = girar_imagenes(yeti_ataca_derecha, True, False)
 
+
+diccionario_animaciones_personaje = {}
+diccionario_animaciones_personaje = {
+    "quieto_derecha": personaje_quieto_derecha,
+    "quieto_izquierda": personaje_quieto_izquierda,
+    "camina_derecha": personaje_camina_derecha,
+    "camina_izquierda": personaje_camina_izquierda,
+    "salta_derecha": personaje_salta_derecha,
+    "salta_izquierda": personaje_salta_izquierda
+}
+
+
+diccionario_animaciones_oso = {}
+diccionario_animaciones_oso = {
+    "quieto_derecha": oso_quieto_derecha,
+    "quieto_izquierda": oso_quieto_izquierda,
+    "camina_derecha": oso_camina_derecha,
+    "camina_izquierda": oso_camina_izquierda
+}
+
+diccionario_animaciones_yeti = {}
+diccionario_animaciones_yeti = {
+    "quieto_derecha": yeti_quieto_derecha,
+    "quieto_izquierda": yeti_quieto_izquierda,
+    "camina_derecha": yeti_camina_derecha,
+    "camina_izquierda": yeti_camina_izquierda,
+    "ataca_derecha": yeti_ataca_derecha,
+    "ataca_izquierda": yeti_ataca_izquierda
+}

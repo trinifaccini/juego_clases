@@ -3,7 +3,7 @@
 
 import pygame
 
-from configuraciones import obtener_rectangulos
+from configuracion_imagenes import obtener_rectangulos
 
 class Plataforma:
     def __init__(self, tamanio: tuple, imagen, pos_inicial: dict, tipo:str) -> None:

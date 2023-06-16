@@ -1,7 +1,7 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 
-from configuraciones import reescalar_imagen, obtener_rectangulos
+from configuracion_imagenes import reescalar_imagen, obtener_rectangulos
 
 # Todos los personajes van a tener:
 
@@ -10,7 +10,7 @@ from configuraciones import reescalar_imagen, obtener_rectangulos
 class Personaje:
     def __init__(self, tamanio: tuple, animaciones: dict, pos_inicial: dict, vidas) -> None:
 
-        # CONFECCION - TODOS
+               # CONFECCION - TODOS
         self.ancho = tamanio[0]
         self.alto = tamanio[1]
 
@@ -55,18 +55,3 @@ class Personaje:
         pantalla.blit(imagenes_accion[self.contador_pasos], self.lados['main'])
         self.contador_pasos += 1
 
-    def mover(self, velocidad, pantalla, eje:str):
-
-        for lado in dict(self.lados):
-            if eje == "x":
-                if self.accion == "derecha":
-                    nueva_x = self.lados["main"].x + velocidad
-                    if nueva_x < pantalla.get_rect().width -  self.lados["main"].width:
-                        self.lados[lado].x += velocidad
-                else:
-                    nueva_x = self.lados["main"].x - velocidad
-                    if nueva_x > 0:
-                        self.lados[lado].x += velocidad
-            else:
-                self.lados[lado].y += velocidad
-        

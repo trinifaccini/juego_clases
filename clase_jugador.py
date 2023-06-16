@@ -1,3 +1,7 @@
+'''
+ARCHIVO CLASE JUGADOR
+'''
+
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
 
@@ -8,6 +12,8 @@ class Jugador (Personaje):
 
         super().__init__(tamanio, animaciones, pos_inicial, vidas)
 
+        self.accion = "quieto"
+
         # SALTO - SOLO JUGADOR
         self.esta_saltando = False
         self.desplazamiento_y = 0
@@ -16,6 +22,7 @@ class Jugador (Personaje):
         self.limite_velocidad_caida = 15
 
         self.puntos = 0
+
 
     def aplicar_gravedad(self, pantalla, lista_plataformas:list):
 
@@ -41,8 +48,29 @@ class Jugador (Personaje):
             else:
                 self.esta_saltando = True
 
+    def mover(self, velocidad, pantalla, eje:str):
 
-    def update(self, pantalla, lista_plataformas:list):
+        for lado in dict(self.lados):
+            if eje == "x":
+                if self.accion == "derecha":
+                    nueva_x = self.lados["main"].x + velocidad
+                    if nueva_x < pantalla.get_rect().width -  self.lados["main"].width:
+                        self.lados[lado].x += velocidad
+                else:
+                    nueva_x = self.lados["main"].x - velocidad
+                    if nueva_x > 0:
+                        self.lados[lado].x += velocidad
+            else:
+                self.lados[lado].y += velocidad
+
+    def reconocer_enemigos(self, enemigos):
+
+        for enemigo in enemigos:
+
+            if self.lados['main'].colliderect(enemigo.lados['main']):
+                self.vidas_actuales -= enemigo.danio
+
+    def update(self, pantalla, lista_plataformas:list, enemigos):
 
         match (self.accion):
             case "derecha":
@@ -68,6 +96,6 @@ class Jugador (Personaje):
 
 
         self.aplicar_gravedad(pantalla, lista_plataformas) # se aplica siempre, no solo cuando salta
-
+        self.reconocer_enemigos(enemigos)
 
         
