@@ -21,7 +21,7 @@ from modo import *
 ################################################################
 
 # Blitear y actualizar todos los objetos de mi pantalla
-def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador, enemigos, items):
+def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador:Jugador, enemigos, items):
 
     pantalla.blit(fondo, (0, 0))
 
@@ -30,11 +30,10 @@ def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador
 
     # Plataformas
     for p in lista_plataformas:
-       p.update(pantalla)
-
+        p.update(pantalla)
 
     # Personajes
-    jugador.update(pantalla, lista_plataformas, enemigos)
+    jugador.update(pantalla, lista_plataformas, enemigos, items)
 
     for enemigo in enemigos:
         enemigo.update(pantalla)
@@ -58,7 +57,7 @@ RELOJ = pygame.time.Clock()
 PANTALLA = pygame.display.set_mode(TAMANIO_PANTALLA)
 
 # FONDO
-fondo = pygame.image.load("Recursos/Fondos/fondo_negro.jpeg")
+fondo = pygame.image.load("Recursos/Fondos/fondo_nivel_1.png")
 fondo = pygame.transform.scale(fondo, TAMANIO_PANTALLA)
 
 # PLATAFORMAS
@@ -77,18 +76,34 @@ lista_plataformas = [piso, plataforma_uno]
 
 # ITEMS
 coca = Item(
-    (70,100),"Recursos/Obstaculos/coca.png",
-    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70})
+    (25,55),"Recursos/Obstaculos/coca_dibujo.png",
+    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70}, 0, 100)
 
 hamburguesa = Item(
     (60,40),"Recursos/Obstaculos/hamburguesa.png",
-    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70})
+    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70}, 100, 0)
 
-items = [coca,hamburguesa]
+# TRAMPAS
+ALTO_TRAMPA_PASTO = 70
+trampa_pasto = Item(
+    (50,ALTO_TRAMPA_PASTO),"Recursos/Obstaculos/trampa_pasto.png",
+    {"x": plataforma_uno.lados['main'].x,
+     "y": plataforma_uno.lados['main'].y-ALTO_TRAMPA_PASTO}, 
+    0, -100, True)
+
+ALTO_TRAMPA_ARBOL = 200
+trampa_arbol = Item(
+    (70,ALTO_TRAMPA_ARBOL),"Recursos/Obstaculos/arbol_1.png",
+    {"x": plataforma_uno.lados['main'].x+100,
+     "y": plataforma_uno.lados['main'].y-ALTO_TRAMPA_ARBOL}, 
+    0, -100, True)
+
+
+items = [coca,hamburguesa, trampa_pasto,trampa_arbol]
 
 # PERSONAJE
 ANCHO_PERSONAJE = 80
-ALTO_PERSONAJE = 95 
+ALTO_PERSONAJE = 95
 tamanio = (ANCHO_PERSONAJE, ALTO_PERSONAJE)
 pos_inicial = {"x": ANCHO_PANTALLA/2,
                "y": ALTO_PANTALLA-ALTO_PERSONAJE-ALTO_PISO}
@@ -159,15 +174,15 @@ while True:
         "pos_y": 0
     }
 
-    texto = fuente.render("Tiempo: ", False, "Green", "Blue")
+    texto = fuente.render(f"Puntos: {esquiador.puntos}", False, "Green", "Blue")
 
-    texto_tiempo = {
+    texto_puntos = {
         "texto": texto,
         "pos_x": 0,
         "pos_y": 0
     }
 
-    textos = [texto_vidas, texto_tiempo]
+    textos = [texto_vidas, texto_puntos]
 
     actualizar_pantalla(PANTALLA, fondo, textos, lista_plataformas, esquiador, enemigos, items)
 

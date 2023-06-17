@@ -21,3 +21,4 @@ class Objeto:
     def update(self,pantalla):
 
         pantalla.blit(self.superficie, self.lados['main'])
+        

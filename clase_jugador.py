@@ -63,14 +63,27 @@ class Jugador (Personaje):
             else:
                 self.lados[lado].y += velocidad
 
-    def reconocer_enemigos(self, enemigos):
+    def colisionar_enemigos(self, enemigos:list):
 
         for enemigo in enemigos:
 
             if self.lados['main'].colliderect(enemigo.lados['main']):
                 self.vidas_actuales -= enemigo.danio
 
-    def update(self, pantalla, lista_plataformas:list, enemigos):
+    # Colisionar con items (especiales o trampas)
+    def colisionar_items(self, items:list):
+
+        for item in items:
+
+            if self.lados['main'].colliderect(item.lados['main']):
+                self.vidas_actuales += item.aporte_vida
+                self.puntos += item.aporte_puntos
+                if item.trampa is not True:
+                    items.remove(item)
+
+        
+
+    def update(self, pantalla, lista_plataformas:list, enemigos:list, items:list):
 
         match (self.accion):
             case "derecha":
@@ -96,6 +109,6 @@ class Jugador (Personaje):
 
 
         self.aplicar_gravedad(pantalla, lista_plataformas) # se aplica siempre, no solo cuando salta
-        self.reconocer_enemigos(enemigos)
-
-        
+        self.colisionar_enemigos(enemigos)
+        self.colisionar_items(items)
+    

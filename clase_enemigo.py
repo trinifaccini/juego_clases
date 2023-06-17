@@ -15,6 +15,8 @@ class Enemigo (Personaje):
         super().__init__(tamanio, animaciones, pos_inicial, vidas)
         self.danio = danio
         self.rectangulo_apoyo = apoyo.lados['main']
+
+        ## ELEGIR ALEATORIAMENTE ESTA DIRECCION
         self.accion = "derecha"
 
     def mover(self, velocidad):
