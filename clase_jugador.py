@@ -80,10 +80,10 @@ class Jugador (Personaje):
                 self.puntos += item.aporte_puntos
                 if item.trampa is not True:
                     items.remove(item)
-
         
 
     def update(self, pantalla, lista_plataformas:list, enemigos:list, items:list):
+   # def update(self, pantalla):
 
         match (self.accion):
             case "derecha":

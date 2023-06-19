@@ -15,39 +15,15 @@ from clase_item import Item
 from clase_jugador import Jugador
 from clase_enemigo import Enemigo
 from clase_plataforma import Plataforma
+from clase_proyectil import Proyectil
+from clase_nivel import Nivel
+from clase_juego import Juego
 from configuracion_imagenes import *
 from modo import *
 
-################################################################
-
-# Blitear y actualizar todos los objetos de mi pantalla
-def actualizar_pantalla(pantalla, fondo, textos:list, lista_plataformas, jugador:Jugador, enemigos, items):
-
-    pantalla.blit(fondo, (0, 0))
-
-    for texto in textos:
-        pantalla.blit(texto['texto'], (texto['pos_x'], texto['pos_y']))
-
-    # Plataformas
-    for p in lista_plataformas:
-        p.update(pantalla)
-
-    # Personajes
-    jugador.update(pantalla, lista_plataformas, enemigos, items)
-
-    for enemigo in enemigos:
-        enemigo.update(pantalla)
-
-    for item in items:
-        item.update(pantalla)
-
-
-
-########################################################################
-
 # PANTALLA
 
-ANCHO_PANTALLA, ALTO_PANTALLA = 1200, 650
+ANCHO_PANTALLA, ALTO_PANTALLA = 1000, 450
 TAMANIO_PANTALLA = (ANCHO_PANTALLA, ALTO_PANTALLA)
 FPS = 18
 
@@ -99,7 +75,7 @@ trampa_arbol = Item(
     0, -100, True)
 
 
-items = [coca,hamburguesa, trampa_pasto,trampa_arbol]
+items = [coca, trampa_pasto,trampa_arbol]
 
 # PERSONAJE
 ANCHO_PERSONAJE = 80
@@ -113,25 +89,42 @@ velocidad = 10  # Cuanto avanza o retrocede el personaje en pixeles
 esquiador = Jugador(
     tamanio, diccionario_animaciones_personaje, pos_inicial, 3000)
 
+proyectil = Proyectil(
+    (20,20),"Recursos/Obstaculos/bola_nieve_1.png",
+    {"x": 200, "y": ALTO_PANTALLA-ALTO_PISO-ALTO_PLATAFORMA-70}, 100)
+
+
 enemigo_uno = Enemigo(
     tamanio, diccionario_animaciones_oso,
     {"x": ANCHO_PANTALLA/2+100, "y": ALTO_PANTALLA-ALTO_PERSONAJE-ALTO_PISO},
     1000, 100, piso)
 
-
-enemigo_dos = Enemigo(
-    tamanio, diccionario_animaciones_yeti,
-    {"x": plataforma_uno.lados['main'].x,
-     "y": plataforma_uno.lados['main'].y-ALTO_PERSONAJE},
-    1000, 100, plataforma_uno)
+# enemigo_dos = Enemigo(
+#     tamanio, diccionario_animaciones_yeti,
+#     {"x": plataforma_uno.lados['main'].x,
+#      "y": plataforma_uno.lados['main'].y-ALTO_PERSONAJE},
+#     1000, 100, plataforma_uno,
+#     "Recursos/Obstaculos/bola_nieve_1.png")
 
 enemigos = []
-enemigos = [enemigo_uno, enemigo_dos]
+enemigos = [enemigo_uno]
+
+# PROYECTILES
 
 
 # TEXTO
 fuente = pygame.font.SysFont("Arial", 40)
 
+# NIVEL
+nivel_uno = Nivel(fondo, lista_plataformas, enemigos, items)
+niveles = [nivel_uno]
+juego = Juego(esquiador, niveles)
+
+tiempo = 0
+
+# Timer para el juego
+TIMER_EVENT = pygame.USEREVENT + 0
+pygame.time.set_timer(TIMER_EVENT, 1000)
 
 def definir_accion_personaje(keys, jugador):
 
@@ -156,35 +149,36 @@ def manejar_eventos_juego(eventos):
                 if evento.key == pygame.K_TAB:
                     change_mode()
 
+dict_pantalla = {
+    "rectangulo": PANTALLA,
+    "ancho": ANCHO_PANTALLA,
+    "alto": ALTO_PANTALLA
+}
+
 
 while True:
 
     RELOJ.tick(FPS)
 
-    manejar_eventos_juego(pygame.event.get())
+    eventos = pygame.event.get()
+
+    manejar_eventos_juego(eventos)
+
+    for evento in eventos:
+        if evento.type == TIMER_EVENT:
+            tiempo += 1
+
+            if tiempo % 5 == 0:
+                for enemigo in juego.niveles[juego.nivel_actual].enemigos:
+                    enemigo.lanzar_proyectil()
 
     definir_accion_personaje(pygame.key.get_pressed(), esquiador)
 
-    texto = fuente.render(f"Vidas: {esquiador.vidas_actuales}", False, "Green", "Blue")
-    ancho_texto = texto.get_width()
+    #if esquiador.vidas_actuales <= 0:
+        # pygame.quit()
+        # sys.exit(0)
 
-    texto_vidas = {
-        "texto": texto,
-        "pos_x": ANCHO_PANTALLA-ancho_texto,
-        "pos_y": 0
-    }
-
-    texto = fuente.render(f"Puntos: {esquiador.puntos}", False, "Green", "Blue")
-
-    texto_puntos = {
-        "texto": texto,
-        "pos_x": 0,
-        "pos_y": 0
-    }
-
-    textos = [texto_vidas, texto_puntos]
-
-    actualizar_pantalla(PANTALLA, fondo, textos, lista_plataformas, esquiador, enemigos, items)
+    juego.update(dict_pantalla, fuente, tiempo)
 
     if get_mode() is True:
         for p in lista_plataformas:
@@ -192,5 +186,10 @@ while True:
         for e in enemigos:
             dibujar_borde_rectangulos(PANTALLA, e.lados, "Blue")
         dibujar_borde_rectangulos(PANTALLA, esquiador.lados, "Red")
+        for i in items:
+            dibujar_borde_rectangulos(PANTALLA, i.lados, "Yellow")
+        for enemigo in juego.niveles[juego.nivel_actual].enemigos:
+            for proyectil in enemigo.lista_proyectiles:
+                dibujar_borde_rectangulos(PANTALLA, proyectil.lados, "Black")
 
     pygame.display.update()

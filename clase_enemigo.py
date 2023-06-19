@@ -7,6 +7,7 @@ ARCHIVO CLASE ENEMIGO
 
 
 from clase_personaje import Personaje
+from clase_proyectil import Proyectil
 
 
 class Enemigo (Personaje):
@@ -18,6 +19,15 @@ class Enemigo (Personaje):
 
         ## ELEGIR ALEATORIAMENTE ESTA DIRECCION
         self.accion = "derecha"
+        self.lista_proyectiles = []
+
+    def lanzar_proyectil(self):
+
+        proyectil = Proyectil(
+        (20,20),"Recursos/Obstaculos/bola_nieve_1.png",
+        {"x": 200, "y": 200}, 100)
+
+        self.lista_proyectiles.append(proyectil)
 
     def mover(self, velocidad):
 
@@ -30,6 +40,7 @@ class Enemigo (Personaje):
 
         for lado in dict(self.lados):
             self.lados[lado].x += velocidad
+            
 
     def update(self, pantalla):
 
@@ -40,3 +51,9 @@ class Enemigo (Personaje):
             case "izquierda":
                 self.animar(pantalla, "camina_izquierda")
                 self.mover(-5)
+
+        for proyectil in self.lista_proyectiles:
+            if proyectil.colisiono is True:
+                self.lista_proyectiles.remove(proyectil)
+            else:
+                proyectil.update(pantalla)

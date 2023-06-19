@@ -9,3 +9,5 @@ class Plataforma(Objeto):
         super().__init__(tamanio, imagen, pos_inicial)
 
         self.tipo = tipo
+
+    #POSICIONAR TRAMPA

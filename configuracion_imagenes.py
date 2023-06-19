@@ -72,10 +72,7 @@ personaje_camina_izquierda = girar_imagenes(personaje_camina_derecha, True, Fals
 
 personaje_salta_derecha = [
     pygame.image.load("Recursos/Personajes/Esquiador/Saltando/esquiador_saltando_0.png"),
-                 #    pygame.image.load("Salta/1.png"),
-                 #    pygame.image.load("Salta/2.png"),
-                 #    pygame.image.load("Salta/3.png")
-                 ]
+]
 
 personaje_salta_izquierda = girar_imagenes(personaje_salta_derecha, True, False)
 
