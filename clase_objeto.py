@@ -7,7 +7,7 @@ import pygame
 from configuracion_imagenes import obtener_rectangulos
 
 class Objeto:
-    def __init__(self, tamanio: tuple, imagen, pos_inicial: dict) -> None:
+    def __init__(self, tamanio: tuple, imagen, pos_inicial: tuple) -> None:
 
         plataforma = pygame.image.load(imagen)
         self.ancho = tamanio[0]
@@ -15,8 +15,8 @@ class Objeto:
         self.superficie = pygame.transform.scale(plataforma, (tamanio[0],tamanio[1]))
 
         rectangulo = self.superficie.get_rect()
-        rectangulo.x = pos_inicial['x']
-        rectangulo.y = pos_inicial['y']
+        rectangulo.x = pos_inicial[0]
+        rectangulo.y = pos_inicial[1]
 
         self.lados = obtener_rectangulos(pygame.Rect(rectangulo))
 
@@ -25,5 +25,5 @@ class Objeto:
 
     def update(self,pantalla):
 
-       self.animar(pantalla)
-        
+        self.animar(pantalla)
+  

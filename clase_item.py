@@ -9,7 +9,7 @@ from clase_objeto import Objeto
 
 class Item(Objeto):
 
-    def __init__(self, tamanio: tuple, imagen, pos_inicial: dict, puntos: int, vida:int, es_trampa=False) -> None:
+    def __init__(self, tamanio: tuple, imagen, pos_inicial: tuple, puntos: int, vida:int, es_trampa=False) -> None:
 
         super().__init__(tamanio, imagen, pos_inicial)
 

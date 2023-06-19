@@ -47,3 +47,7 @@ class Nivel():
         self.posicionar_items(rect_pantalla)
 
         jugador.update(rect_pantalla, self.plataformas, self.enemigos, self.items)
+
+    def update_personalizado(self, jugador):
+
+        jugador.update_personalizado(self.enemigos, self.items)

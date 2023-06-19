@@ -107,8 +107,9 @@ class Jugador (Personaje):
                     else:
                         self.animar(pantalla, "quieto_izquierda")
 
-
         self.aplicar_gravedad(pantalla, lista_plataformas) # se aplica siempre, no solo cuando salta
-        self.colisionar_enemigos(enemigos)
         self.colisionar_items(items)
-    
+        
+    def update_personalizado(self, enemigos, items):
+
+        self.colisionar_enemigos(enemigos)
