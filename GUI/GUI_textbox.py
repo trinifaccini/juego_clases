@@ -1,22 +1,32 @@
+'''
+CLASE TEXTBOX
+'''
+
+# pylint: disable=missing-function-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=unused-wildcard-import
+# pylint: disable=wildcard-import
+
+import unicodedata
 import pygame
 from pygame.locals import *
-from GUI_widget import *
-import unicodedata
+from gui_widget import *
 
 FPS = 18
 
+
 class TextBox(Widget):
     def __init__(
-            self, screen, master_x, master_y, x,y,w,h,
+            self, screen, master_x, master_y, x, y, w, h,
             bg_color, selecter_bg_color, border_color, selected_border_color, border_size,
             font, font_size, font_color
     ):
-        
-        super().__init__(screen,x,y,w,h,bg_color, border_color, border_size)
 
-        pygame.font.init() # llamo para que no pinche
+        super().__init__(screen, x, y, w, h, bg_color, border_color, border_size)
+
+        pygame.font.init()  # llamo para que no pinche
         self._default_bg_color = bg_color
-        self._default_border_color= border_color
+        self._default_border_color = border_color
         self._selected_bg_color = selecter_bg_color
         self._selected_border_color = selected_border_color
         self._text = ""
@@ -31,21 +41,23 @@ class TextBox(Widget):
 
     def get_text(self):
         return self._text
-    
+
     def set_text(self, text):
         self._text = text
         self.render()
 
     def render(self):
-        image_text = self._font.render(self._text, True, self._font_color, self._bg_color)
-        self._slave = pygame.surface.Surface((self._w, self._h)) # Superficie que se adapte a la del 
+        image_text = self._font.render(
+            self._text, True, self._font_color, self._bg_color)
+        # Superficie que se adapte a la del
+        self._slave = pygame.surface.Surface((self._w, self._h))
 
         self.slave_rect_x = self._x
         self.slave_rect_y = self._y
         self.slave_rect_collide = pygame.Rect(self.slave_rect)
 
         self._slave.fill(self._bg_color)
-        
+
         media_texto_horizontal = image_text.get_width() / 2
         media_texto_vertical = image_text.get_height() / 2
 
@@ -55,8 +67,8 @@ class TextBox(Widget):
         diferencia_horizontal = media_horizontal - media_texto_horizontal
         diferencia_vertical = media_vertical - media_texto_vertical
 
-
-        self._slave.blit(image_text, (diferencia_horizontal, diferencia_vertical))
+        self._slave.blit(
+            image_text, (diferencia_horizontal, diferencia_vertical))
 
     def update(self, lista_eventos):
 
@@ -80,7 +92,3 @@ class TextBox(Widget):
                     self_text += character
                 self.render()
         self.draw()
-
-
-
-

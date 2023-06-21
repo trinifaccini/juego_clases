@@ -1,12 +1,14 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
+# pylint: disable=unused-wildcard-import
+# pylint: disable=wildcard-import
 
 
 '''
 CLASE JUEGO
 '''
 
-import sys 
+import sys
 import pygame
 from modo import *
 
